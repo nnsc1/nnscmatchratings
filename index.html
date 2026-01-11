@@ -1,0 +1,616 @@
+import React, { useState } from 'react';
+import { Trophy, Target, XCircle, Save, AlertCircle, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+
+const PLAYERS = [
+  { name: '15Goalies', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-458CFD723E069B0C577CCD4A7B3DE99D-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: '1300Melvin', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-FD131A0A32123D1592FA944BA8C0AB71-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'Aegisrs', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-91CD1E022A1DE16B59AAB9383732DFD0-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'angelolee1919', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-A0FFABCC17C805349AC8C845D69C5827-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'CheekyBritishPerson1', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-9D6CC02220D03B8E497CFF4F8716F6D7-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'CristianoRonaldo9604', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-6EE02E020042724948A3664F7D5E9CC1-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'dvrianz', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-C8CC0E22A0A211769BA6144460D68858-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'E_Militao', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F8BC2EC97442452B11E9F91D1B6A0E52-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'ElTatoYorugua', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-C2B637FE69E7DA3B727E4FBBC746B7D2-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'EnesxRlo', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D47EF9FA4657F3A03CA9C934D4573A45-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'Fafumz', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-EEA72C829649F25222CF461B98882217-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'iHyperReal', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F986B875E9CC23D0C209A1585C6D645F-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'J0ffPerc', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-A490714C0A7AB81C6E0E5C1BC1912997-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'JellozBenz', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-AF25ED9065309B2312AF606D49FA7651-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'kenenmusss', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-3D65A6C1A539F4047DEC5E6C27F058B4-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'mageman5304', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D9D2D5569A2948AE3FD64B17BAFBE73A-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'nascarremy16', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-E7E75396C0A87CC5A5676ED754E337A2-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'NETHQES2', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-52222B2B7F2E04851C40EA9097CA9B65-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'petnilongo3', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-19478AEA22812F84D280C075B35C9E5C-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'psychx777', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-ED716D17FD4A8800B905DCCA5C6E38C6-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'realzvn', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D3477EC77FB7EF09BC273713131C3B47-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'Salomaoarruda', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-8B04962E17927886493698FFFD0A81DA-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'TG37074', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-9161766F7FB0A1526BE392E338E2D599-Png/150/150/AvatarHeadshot/Webp/noFilter' },
+  { name: 'Tyranizard89', headshot: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-AD878AA7383D7A762FE2419D048F24E2-Png/150/150/AvatarHeadshot/Webp/noFilter' }
+];
+
+const FORMATIONS = {
+  6: ['GK', 'LB', 'CB', 'RB', 'CM', 'ST'],
+  7: ['GK', 'LB', 'CB', 'RB', 'CM', 'LW', 'RW']
+};
+
+const EVENTS = [
+  { id: 'goal', label: 'Goal', icon: Target, color: 'bg-green-500', shortLabel: 'G' },
+  { id: 'assist', label: 'Assist', icon: Trophy, color: 'bg-blue-500', shortLabel: 'A' },
+  { id: 'yellowCard', label: 'Yellow Card', icon: AlertCircle, color: 'bg-yellow-500', shortLabel: 'YC' },
+  { id: 'redCard', label: 'Red Card', icon: XCircle, color: 'bg-red-600', shortLabel: 'RC' },
+  { id: 'ownGoal', label: 'Own Goal', icon: XCircle, color: 'bg-red-500', shortLabel: 'OG' },
+  { id: 'missedPenalty', label: 'Missed Penalty', icon: AlertCircle, color: 'bg-orange-500', shortLabel: 'MP' },
+  { id: 'penaltySave', label: 'Penalty Save', icon: Save, color: 'bg-purple-500', shortLabel: 'PS' }
+];
+
+const getRatingColor = (rating) => {
+  if (rating === 10) return 'bg-blue-600';
+  if (rating >= 9) return 'bg-green-600';
+  if (rating >= 8) return 'bg-green-500';
+  if (rating >= 7) return 'bg-lime-500';
+  if (rating >= 6) return 'bg-yellow-400';
+  if (rating >= 5) return 'bg-orange-400';
+  if (rating >= 4) return 'bg-orange-500';
+  if (rating >= 3) return 'bg-red-400';
+  return 'bg-red-600';
+};
+
+export default function FutbolRatings() {
+  const [formation, setFormation] = useState(6);
+  const [fieldPlayers, setFieldPlayers] = useState({});
+  const [substitutes, setSubstitutes] = useState({});
+  const [draggedPlayer, setDraggedPlayer] = useState(null);
+  const [finalized, setFinalized] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [manOfTheMatch, setManOfTheMatch] = useState(null);
+
+  const handleDragStart = (e, player) => {
+    setDraggedPlayer(player);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e, position, isSub = false) => {
+    e.preventDefault();
+    if (draggedPlayer) {
+      const targetState = isSub ? substitutes : fieldPlayers;
+      const setTargetState = isSub ? setSubstitutes : setFieldPlayers;
+      
+      setTargetState(prev => ({
+        ...prev,
+        [position]: {
+          name: draggedPlayer.name,
+          headshot: draggedPlayer.headshot,
+          rating: prev[position]?.rating || 5,
+          events: prev[position]?.events || {},
+          minuteIn: prev[position]?.minuteIn || '',
+          minuteOut: prev[position]?.minuteOut || ''
+        }
+      }));
+      setDraggedPlayer(null);
+    }
+  };
+
+  const updateRating = (position, rating, isSub = false) => {
+    const setTargetState = isSub ? setSubstitutes : setFieldPlayers;
+    setTargetState(prev => ({
+      ...prev,
+      [position]: { ...prev[position], rating: parseFloat(rating) }
+    }));
+  };
+
+  const updateMinute = (position, field, value, isSub = false) => {
+    const setTargetState = isSub ? setSubstitutes : setFieldPlayers;
+    setTargetState(prev => ({
+      ...prev,
+      [position]: { ...prev[position], [field]: value }
+    }));
+  };
+
+  const incrementEvent = (position, eventId, isSub = false) => {
+    const setTargetState = isSub ? setSubstitutes : setFieldPlayers;
+    setTargetState(prev => {
+      const player = prev[position];
+      const events = player.events || {};
+      
+      return {
+        ...prev,
+        [position]: {
+          ...player,
+          events: {
+            ...events,
+            [eventId]: (events[eventId] || 0) + 1
+          }
+        }
+      };
+    });
+  };
+
+  const decrementEvent = (position, eventId, isSub = false) => {
+    const setTargetState = isSub ? setSubstitutes : setFieldPlayers;
+    setTargetState(prev => {
+      const player = prev[position];
+      const events = player.events || {};
+      const currentCount = events[eventId] || 0;
+      
+      if (currentCount <= 0) return prev;
+      
+      const newEvents = { ...events };
+      if (currentCount === 1) {
+        delete newEvents[eventId];
+      } else {
+        newEvents[eventId] = currentCount - 1;
+      }
+      
+      return {
+        ...prev,
+        [position]: {
+          ...player,
+          events: newEvents
+        }
+      };
+    });
+  };
+
+  const removePlayer = (position, isSub = false) => {
+    const setTargetState = isSub ? setSubstitutes : setFieldPlayers;
+    setTargetState(prev => {
+      const newPlayers = { ...prev };
+      delete newPlayers[position];
+      return newPlayers;
+    });
+    if (selectedPlayer?.position === position && selectedPlayer?.isSub === isSub) {
+      setSelectedPlayer(null);
+    }
+  };
+
+  const positions = FORMATIONS[formation];
+  const usedPlayerNames = [
+    ...Object.values(fieldPlayers).map(p => p.name),
+    ...Object.values(substitutes).map(p => p.name)
+  ];
+  const availablePlayers = PLAYERS.filter(p => !usedPlayerNames.includes(p.name));
+
+  const getPositionStyle = (position) => {
+    if (position === 'GK') return { top: '85%', left: '50%' };
+    if (formation === 6) {
+      if (position === 'LB') return { top: '65%', left: '20%' };
+      if (position === 'CB') return { top: '65%', left: '50%' };
+      if (position === 'RB') return { top: '65%', left: '80%' };
+      if (position === 'CM') return { top: '40%', left: '50%' };
+      if (position === 'ST') return { top: '15%', left: '50%' };
+    } else {
+      if (position === 'LB') return { top: '65%', left: '20%' };
+      if (position === 'CB') return { top: '65%', left: '50%' };
+      if (position === 'RB') return { top: '65%', left: '80%' };
+      if (position === 'CM') return { top: '40%', left: '50%' };
+      if (position === 'LW') return { top: '15%', left: '25%' };
+      if (position === 'RW') return { top: '15%', left: '75%' };
+    }
+    return { top: '50%', left: '50%' };
+  };
+
+  const FinalizedPlayerCard = ({ player, position, isSub = false }) => {
+    const isMotm = manOfTheMatch?.position === position && manOfTheMatch?.isSub === isSub;
+    
+    return (
+      <div className={`bg-gray-900 rounded-lg p-4 shadow-xl w-56 ${
+        player.events?.redCard ? 'ring-4 ring-red-600' :
+        player.events?.yellowCard ? 'ring-4 ring-yellow-400' :
+        isMotm ? 'ring-4 ring-yellow-400' : ''
+      }`}>
+        <div className="mb-3 flex items-center gap-3">
+          <img 
+            src={player.headshot || 'https://via.placeholder.com/48'} 
+            alt={player.name}
+            className="w-12 h-12 rounded-full border-2 border-gray-700 object-cover bg-gray-800"
+            onError={(e) => { 
+              console.log('Finalized image failed to load:', player.headshot);
+              e.target.src = 'https://via.placeholder.com/48';
+            }}
+          />
+          <div className="flex-1 min-w-0">
+            <div className="text-xs text-gray-400 mb-1 flex items-center justify-between">
+              <span>{isSub ? 'SUB' : position}</span>
+              {isMotm && <span className="text-yellow-400 font-bold">⭐ MOTM</span>}
+            </div>
+            <div className="font-bold text-base truncate">{player.name}</div>
+          </div>
+        </div>
+
+        {(player.minuteIn || player.minuteOut) && (
+          <div className="mb-3 flex gap-3 text-xs">
+            {player.minuteIn && (
+              <div className="flex items-center gap-1 text-green-400">
+                <ArrowUpCircle size={14} />
+                <span>{player.minuteIn}'</span>
+              </div>
+            )}
+            {player.minuteOut && (
+              <div className="flex items-center gap-1 text-red-400">
+                <ArrowDownCircle size={14} />
+                <span>{player.minuteOut}'</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className={`h-12 rounded-lg flex items-center justify-center font-bold text-2xl mb-3 ${getRatingColor(player.rating)}`}>
+          {player.rating?.toFixed(1)}
+        </div>
+
+        {Object.keys(player.events || {}).length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {EVENTS.map(event => {
+              const count = player.events?.[event.id] || 0;
+              if (count === 0) return null;
+              if (event.id === 'penaltySave' && position !== 'GK') return null;
+              
+              const Icon = event.icon;
+              
+              return (
+                <div
+                  key={event.id}
+                  className={`${event.color} px-3 py-1 rounded-full flex items-center gap-2 text-sm font-semibold`}
+                >
+                  <Icon size={16} />
+                  <span>{count}×</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  if (finalized) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-4xl font-bold">Match Ratings</h1>
+            <button
+              onClick={() => setFinalized(false)}
+              className="px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition"
+            >
+              Edit Ratings
+            </button>
+          </div>
+
+          <div className="relative bg-gradient-to-b from-green-600 to-green-700 rounded-lg overflow-hidden mb-6" style={{ height: '700px' }}>
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-0 left-1/2 w-px h-full bg-white transform -translate-x-1/2"></div>
+              <div className="absolute top-1/2 left-1/2 w-24 h-24 border-2 border-white rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+            </div>
+
+            {positions.map((position) => {
+              const style = getPositionStyle(position);
+              const player = fieldPlayers[position];
+
+              if (!player) return null;
+
+              return (
+                <div
+                  key={position}
+                  className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                  style={style}
+                >
+                  <FinalizedPlayerCard player={player} position={position} />
+                </div>
+              );
+            })}
+          </div>
+
+          {Object.keys(substitutes).length > 0 && (
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h2 className="text-2xl font-bold mb-4">Substitutes</h2>
+              <div className="flex flex-wrap gap-4">
+                {Object.entries(substitutes).map(([key, player]) => (
+                  <FinalizedPlayerCard key={key} player={player} position={key} isSub={true} />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  const currentPlayer = selectedPlayer 
+    ? (selectedPlayer.isSub ? substitutes[selectedPlayer.position] : fieldPlayers[selectedPlayer.position])
+    : null;
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-6">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-center mb-2">NNSC Match Ratings</h1>
+        <p className="text-center text-gray-400 mb-6">Drag players onto the field and click to edit details</p>
+
+        <div className="flex justify-center gap-4 mb-6">
+          <button
+            onClick={() => setFormation(6)}
+            className={`px-6 py-2 rounded-lg font-semibold transition ${
+              formation === 6 ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'
+            }`}
+          >
+            6 Players
+          </button>
+          <button
+            onClick={() => setFormation(7)}
+            className={`px-6 py-2 rounded-lg font-semibold transition ${
+              formation === 7 ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'
+            }`}
+          >
+            7 Players
+          </button>
+          <button
+            onClick={() => setFinalized(true)}
+            className="px-8 py-2 bg-green-600 hover:bg-green-500 rounded-lg font-semibold transition ml-4"
+          >
+            Finalize Ratings
+          </button>
+        </div>
+
+        <div className="grid grid-cols-12 gap-4">
+          {/* Available Players */}
+          <div className="col-span-2 bg-gray-800 rounded-lg p-3 h-[620px] flex flex-col">
+            <h2 className="text-sm font-bold mb-3">Available ({availablePlayers.length})</h2>
+            <div className="space-y-1.5 overflow-y-auto pr-1 flex-1">
+              {availablePlayers.map(player => (
+                <div
+                  key={player.name}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, player)}
+                  className="bg-gray-700 p-1.5 rounded cursor-move hover:bg-gray-600 transition text-xs"
+                >
+                  <div className="font-semibold truncate">{player.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Field */}
+          <div className="col-span-7">
+            <div className="relative bg-gradient-to-b from-green-600 to-green-700 rounded-lg overflow-hidden mb-4" style={{ height: '500px' }}>
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute top-0 left-1/2 w-px h-full bg-white transform -translate-x-1/2"></div>
+                <div className="absolute top-1/2 left-1/2 w-24 h-24 border-2 border-white rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+              </div>
+
+              {positions.map((position) => {
+                const style = getPositionStyle(position);
+                const player = fieldPlayers[position];
+                const isSelected = selectedPlayer?.position === position && !selectedPlayer?.isSub;
+
+                return (
+                  <div
+                    key={position}
+                    onDragOver={handleDragOver}
+                    onDrop={(e) => handleDrop(e, position, false)}
+                    className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                    style={style}
+                  >
+                    {player ? (
+                      <div 
+                        onClick={() => setSelectedPlayer({ position, isSub: false })}
+                        className={`bg-gray-900 rounded-lg p-2 shadow-lg cursor-pointer transition w-24 ${
+                          player.events?.redCard ? 'ring-2 ring-red-600' :
+                          player.events?.yellowCard ? 'ring-2 ring-yellow-400' :
+                          isSelected ? 'ring-2 ring-blue-500' : 'hover:ring-2 hover:ring-gray-500'
+                        }`}
+                      >
+                        <img 
+                          src={player.headshot || 'https://via.placeholder.com/40'} 
+                          alt={player.name}
+                          className="w-10 h-10 rounded-full border-2 border-gray-700 mx-auto mb-1 object-cover bg-gray-800"
+                          onError={(e) => { 
+                            console.log('Image failed to load:', player.headshot);
+                            e.target.src = 'https://via.placeholder.com/40';
+                          }}
+                        />
+                        <div className="text-[10px] text-gray-400 mb-1 text-center">{position}</div>
+                        <div className="text-[9px] font-bold truncate mb-1 text-center">{player.name}</div>
+                        <div className={`h-5 rounded flex items-center justify-center text-xs font-bold ${getRatingColor(player.rating)}`}>
+                          {player.rating?.toFixed(1)}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-gray-800 bg-opacity-50 border-2 border-dashed border-gray-500 rounded-lg p-2 w-24 h-24 flex items-center justify-center text-gray-400">
+                        <div className="text-center text-[10px] font-bold">{position}</div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Substitutes Bench */}
+            <div className="bg-gray-800 rounded-lg p-3">
+              <h2 className="text-sm font-bold mb-3">Substitutes (Max 5)</h2>
+              <div className="grid grid-cols-5 gap-2">
+                {[0, 1, 2, 3, 4].map(index => {
+                  const subKey = `SUB${index}`;
+                  const player = substitutes[subKey];
+                  const isSelected = selectedPlayer?.position === subKey && selectedPlayer?.isSub;
+
+                  return (
+                    <div
+                      key={subKey}
+                      onDragOver={handleDragOver}
+                      onDrop={(e) => handleDrop(e, subKey, true)}
+                    >
+                      {player ? (
+                        <div 
+                          onClick={() => setSelectedPlayer({ position: subKey, isSub: true })}
+                          className={`bg-gray-700 rounded-lg p-2 cursor-pointer transition ${
+                            player.events?.redCard ? 'ring-2 ring-red-600' :
+                            player.events?.yellowCard ? 'ring-2 ring-yellow-400' :
+                            isSelected ? 'ring-2 ring-blue-500' : 'hover:ring-2 hover:ring-gray-600'
+                          }`}
+                        >
+                          <img 
+                            src={player.headshot || 'https://via.placeholder.com/40'} 
+                            alt={player.name}
+                            className="w-10 h-10 rounded-full border-2 border-gray-600 mx-auto mb-1 object-cover bg-gray-800"
+                            onError={(e) => { 
+                              console.log('Sub image failed to load:', player.headshot);
+                              e.target.src = 'https://via.placeholder.com/40';
+                            }}
+                          />
+                          <div className="text-[10px] text-gray-400 mb-1">SUB</div>
+                          <div className="text-[9px] font-bold truncate mb-1">{player.name}</div>
+                          <div className={`h-5 rounded flex items-center justify-center text-xs font-bold ${getRatingColor(player.rating)}`}>
+                            {player.rating?.toFixed(1)}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-gray-700 bg-opacity-50 border-2 border-dashed border-gray-600 rounded-lg p-2 h-24 flex items-center justify-center text-gray-400">
+                          <div className="text-center text-[10px]">SUB {index + 1}</div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Player Details Panel */}
+          <div className="col-span-3 bg-gray-800 rounded-lg p-4 max-h-[700px] overflow-y-auto">
+            {currentPlayer ? (
+              <div>
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <div className="text-xs text-gray-400 mb-1">
+                      {selectedPlayer.isSub ? 'SUBSTITUTE' : selectedPlayer.position}
+                    </div>
+                    <div className="text-lg font-bold">{currentPlayer.name}</div>
+                  </div>
+                  <button
+                    onClick={() => removePlayer(selectedPlayer.position, selectedPlayer.isSub)}
+                    className="text-red-400 hover:text-red-300 text-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
+
+                {/* Substitution Times */}
+                <div className="mb-4 space-y-2">
+                  {selectedPlayer.isSub && (
+                    <div>
+                      <label className="text-xs text-gray-400 flex items-center gap-2 mb-1">
+                        <ArrowUpCircle size={14} className="text-green-400" />
+                        Minute In
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="e.g. 65"
+                        value={currentPlayer.minuteIn || ''}
+                        onChange={(e) => updateMinute(selectedPlayer.position, 'minuteIn', e.target.value, selectedPlayer.isSub)}
+                        className="w-full px-3 py-2 bg-gray-700 rounded text-sm"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <label className="text-xs text-gray-400 flex items-center gap-2 mb-1">
+                      <ArrowDownCircle size={14} className="text-red-400" />
+                      Minute Out
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 80"
+                      value={currentPlayer.minuteOut || ''}
+                      onChange={(e) => updateMinute(selectedPlayer.position, 'minuteOut', e.target.value, selectedPlayer.isSub)}
+                      className="w-full px-3 py-2 bg-gray-700 rounded text-sm"
+                    />
+                  </div>
+                </div>
+
+                {/* Rating */}
+                <div className="mb-4">
+                  <label className="text-xs text-gray-400 mb-2 block">Rating (0-10)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="10"
+                    step="0.1"
+                    value={currentPlayer.rating || 5}
+                    onChange={(e) => updateRating(selectedPlayer.position, e.target.value, selectedPlayer.isSub)}
+                    className="w-full px-3 py-2 bg-gray-700 rounded text-sm mb-2"
+                  />
+                  <div className={`h-10 rounded flex items-center justify-center font-bold text-lg ${getRatingColor(currentPlayer.rating)}`}>
+                    {currentPlayer.rating?.toFixed(1)}
+                  </div>
+                </div>
+
+                {/* Events */}
+                <div>
+                  <label className="text-xs text-gray-400 mb-2 block">Match Events</label>
+                  <div className="space-y-2">
+                    {EVENTS.map(event => {
+                      if (event.id === 'penaltySave' && selectedPlayer.position !== 'GK') return null;
+                      const Icon = event.icon;
+                      const count = currentPlayer.events?.[event.id] || 0;
+                      
+                      return (
+                        <div key={event.id} className="flex items-center gap-2">
+                          <button
+                            onClick={() => decrementEvent(selectedPlayer.position, event.id, selectedPlayer.isSub)}
+                            className="w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded flex items-center justify-center font-bold"
+                            disabled={count === 0}
+                          >
+                            −
+                          </button>
+                          <div className={`flex-1 ${event.color} rounded px-3 py-2 flex items-center justify-between`}>
+                            <div className="flex items-center gap-2">
+                              <Icon size={16} />
+                              <span className="text-sm font-semibold">{event.label}</span>
+                            </div>
+                            <span className="font-bold">{count}</span>
+                          </div>
+                          <button
+                            onClick={() => incrementEvent(selectedPlayer.position, event.id, selectedPlayer.isSub)}
+                            className="w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded flex items-center justify-center font-bold"
+                          >
+                            +
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Man of the Match */}
+                <div className="mt-4 pt-4 border-t border-gray-700">
+                  <button
+                    onClick={() => {
+                      const isCurrentMotm = manOfTheMatch?.position === selectedPlayer.position && manOfTheMatch?.isSub === selectedPlayer.isSub;
+                      setManOfTheMatch(isCurrentMotm ? null : { position: selectedPlayer.position, isSub: selectedPlayer.isSub });
+                    }}
+                    className={`w-full py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 ${
+                      manOfTheMatch?.position === selectedPlayer.position && manOfTheMatch?.isSub === selectedPlayer.isSub
+                        ? 'bg-yellow-500 hover:bg-yellow-400 text-gray-900'
+                        : 'bg-gray-700 hover:bg-gray-600 text-white'
+                    }`}
+                  >
+                    <span className="text-xl">⭐</span>
+                    <span>{manOfTheMatch?.position === selectedPlayer.position && manOfTheMatch?.isSub === selectedPlayer.isSub ? 'Remove MOTM' : 'Set as MOTM'}</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center text-gray-400 py-8">
+                <p className="text-sm">Click on a player to edit their details</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
